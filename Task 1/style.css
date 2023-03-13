@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.root {
+  margin: 0 auto;
+  padding: 15px;
+  width: 600px;
+  border: 1px solid #3e3d3d;
+  box-sizing: border-box;
+}
+
+.phone {
+  display: flex;
+  padding: 10px 10px;
+}
+
+.sum {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+}
