@@ -4,45 +4,35 @@
 */
 
 import users from './data/data.json' assert { type: 'json' };
-import { transformAndDeleteCharacters } from './helpers/helper.js';
+import { convertDollarsToNumber } from './helpers/helper.js';
 
-const root = document.querySelector('.root');
+const filterUserPhonesByBalance = (value, index) => {
+	const generateFilterArr = [];
 
-const findBalanceMore2k = (value) => {
-	const generateFilterArr = value.filter((item) => {
-		if (transformAndDeleteCharacters(item.balance) >= 2000) {
-			return item;
+	if (Number.isInteger(index) && Array.isArray(value)) {
+		for (let i = 0; i < value.length; i++) {
+			const element = value[i];
+			if (convertDollarsToNumber(element.balance) >= index) {
+				generateFilterArr.push(element.phone);
+			}
 		}
-	});
+	} else {
+		throw 'TypeError: Arguments wrong type.';
+	}
 
 	return generateFilterArr;
 };
 
-const showPhoneUsers = () => {
-	const arr = findBalanceMore2k(users);
-	return arr.map((item) => {
-		const div = document.createElement('div');
-		div.classList.add('phone');
-		div.innerHTML = item.phone;
-		root.append(div);
-	});
-};
+filterUserPhonesByBalance(users, 2000);
 
-showPhoneUsers();
+const getSumAllUsersBalance = (value) => {
+	let sumUsersBalance = 0;
 
-const getSumUsersBalance = () => {
-	const getUsersInfo = findBalanceMore2k(users);
-	let sumBalance = 0;
-
-	getUsersInfo.map((item) => {
-		return (sumBalance += transformAndDeleteCharacters(item.balance));
+	const findAllUsersBalance = value.map((item) => {
+		return (sumUsersBalance += convertDollarsToNumber(item.balance));
 	});
 
-	document
-		.querySelector('.sum')
-		.insertAdjacentHTML('afterbegin', `<h1 class='balance'>Summary Balance: ${sumBalance}$</h1>`);
-
-	return sumBalance;
+	return sumUsersBalance;
 };
 
-getSumUsersBalance();
+getSumAllUsersBalance(users);
