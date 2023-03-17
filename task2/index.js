@@ -5,7 +5,8 @@
 */
 
 const pow = (number, degree) => {
-	return degree == 1 ? number : number * pow(number, degree - 1);
+	if (!isNaN(number) || !isNaN(degree)) return degree == 1 ? number : number * pow(number, degree - 1);
+	throw new TypeError('function pow() expects number as first and second argument.');
 };
 
-pow(2, 5);
+alert(pow('2', 5));
