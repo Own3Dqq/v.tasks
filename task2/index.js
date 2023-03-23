@@ -24,12 +24,12 @@ sum(5) = 8
 sum(20) = 28 
 */
 
-function sum() {
+const sum = () => {
 	let result = 0;
-	return function (value) {
+	return (value) => {
 		return (result += value);
 	};
-}
+};
 
 let addNumber = sum();
 
@@ -38,15 +38,13 @@ console.log(addNumber(5));
 console.log(addNumber(320));
 
 /* За допомогою замикання написати ф-цію structureUserInfo, яка збирає інфо-об'єкт про користувача з аргументів.
-
 Приклад:
-
 structureUserInfo('John')('Admin') // {role: "Admin", name: "John"} */
 
 const structUserInfo = (position) => {
-	return function (name) {
-		return function (age) {
-			return function (religion) {
+	return (name) => {
+		return (age) => {
+			return (religion) => {
 				return {
 					position,
 					name,
