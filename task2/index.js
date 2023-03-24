@@ -41,6 +41,7 @@ console.log(addNumber(320));
 Приклад:
 structureUserInfo('John')('Admin') // {role: "Admin", name: "John"} */
 
+/* 1) */
 const structUserInfo = (position) => {
 	return (name) => {
 		return (age) => {
@@ -57,3 +58,8 @@ const structUserInfo = (position) => {
 };
 
 console.log(structUserInfo('Admin')('Vladyslav')(27)('Atheist'));
+
+/* 2) */
+const structUserInfo2 = (position) => (name) => (age) => (religion) => {
+	return { position, name, age, religion };
+};
