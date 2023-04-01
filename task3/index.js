@@ -39,10 +39,10 @@ function Human({ name, surname, age }) {
 	this.surname = surname;
 	this.age = age;
 
-	this.getFullName = function () {
+	Human.prototype.getFullName = function () {
 		return `${this.name} ${this.surname}`;
 	};
-	this.setFullName = function (fullName) {
+	Human.prototype.setFullName = function (fullName) {
 		return ([this.name, this.surname] = fullName.split(' '));
 	};
 }
@@ -50,8 +50,9 @@ function Human({ name, surname, age }) {
 const user1 = new Human({ name: 'Vladyslav', surname: 'Tsarik', age: 26 });
 
 console.dir(user1);
-console.log(user1.getFullName());
+
 console.log(user1.setFullName('Vladyslav Tsarik'));
+console.log(user1.getFullName());
 
 /* 2) */
 
@@ -60,26 +61,39 @@ function Student({ name, surname, age, mark }) {
 	this.age = age;
 	this.mark = mark;
 
-	this.getAverageMark = function () {
-		return mark.reduce((partial_sum, a) => partial_sum + a, 0) / mark.length;
+	Student.prototype.getAverageMark = function () {
+		return mark.reduce((a, b) => a + b) / mark.length;
 	};
-	this.getMinMark = function () {
+	Student.prototype.getMinMark = function () {
 		return Math.min(...mark);
 	};
-	this.getMaxMark = function () {
+	Student.prototype.getMaxMark = function () {
 		return Math.max(...mark);
 	};
 }
+/*  */
+// Student.prototype = Object.create(Human.prototype);
+// Student.prototype.constructor = Student;
+/*  */
 
-Student.prototype = Object.create(Human.prototype);
-Student.prototype.constructor = Student;
+const Student2 = new Student({ name: 'John', surname: 'Black', age: 73, mark: [2, 3, 4, 5, 3, 4, 5, 3] });
+3;
+const Student3 = new Student({ name: 'Bob', surname: 'White', age: 45, mark: [2, 3, 4, 5, 3, 4, 5, 3] });
+const Student4 = new Student({ name: 'Willyam', surname: 'Skoll', age: 15, mark: [2, 3, 4, 5, 3, 4, 5, 3] });
 
-Student.prototype.sayHi = function () {
-	return `Glory to Ukraine ${this.name}`;
-};
+console.dir(Student2);
+console.dir(Student3);
+console.dir(Student4);
 
 const student1 = new Student({ name: 'Oleg', surname: 'Saske', age: 29, mark: [3, 4, 4, 3, 3, 3, 5, 3, 5] });
 
 console.log(student1);
-/* 3)
- */
+/* 3) */
+
+function Teacher({ name, surname, students }) {
+	Human.call(this, { name, surname });
+
+	this.students = students;
+}
+
+const teacher1 = new Teacher('Tatiana', 'Glushko', []);
