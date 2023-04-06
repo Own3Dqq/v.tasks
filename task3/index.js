@@ -21,7 +21,7 @@ getMaxMark() - повертає максимальну оцінку
 - getListOfNamesByAverageMark() - віддає масив імен студентів відсортований за найвищою середньою оцінкою.
 - getStudentByName(name) - отримати один об'єкт студента за ім'ям.
 - removeStudentByName(name) - видалити об'єкт студента, знайденого за ім'ям.
-- updateStudentByName(new Student(...), name) - знайти об'єкт студента по name та замінити на student (новий екземпляр ФК Student)s */
+- updateStudentByName(new Student(...), name) - знайти об'єкт студента по name та замінити на student (новий екземпляр ФК Student) */
 
 /* Підсказки та правила, яких потрібно дотримуватися при виконанні завдання
 
@@ -38,21 +38,20 @@ function Human({ name, surname, age }) {
 	this.name = name;
 	this.surname = surname;
 	this.age = age;
-
-	Human.prototype.getFullName = function () {
-		return `${this.name} ${this.surname}`;
-	};
-	Human.prototype.setFullName = function (fullName) {
-		return ([this.name, this.surname] = fullName.split(' '));
-	};
 }
 
+Human.prototype.getFullName = function () {
+	return `${this.name} ${this.surname}`;
+};
+Human.prototype.setFullName = function (fullName) {
+	return ([this.name, this.surname] = fullName.split(' '));
+};
+
+Human.prototype.constructor = Human;
+/*  */
 const user1 = new Human({ name: 'Vladyslav', surname: 'Tsarik', age: 26 });
 
 console.dir(user1);
-
-console.log(user1.setFullName('Vladyslav Tsarik'));
-console.log(user1.getFullName());
 
 /* 2) */
 
@@ -62,38 +61,108 @@ function Student({ name, surname, age, mark }) {
 	this.mark = mark;
 
 	Student.prototype.getAverageMark = function () {
-		return mark.reduce((a, b) => a + b) / mark.length;
+		return this.mark.reduce((a, b) => a + b) / mark.length;
 	};
 	Student.prototype.getMinMark = function () {
-		return Math.min(...mark);
+		return Math.min(...this.mark);
 	};
 	Student.prototype.getMaxMark = function () {
 		return Math.max(...mark);
 	};
 }
-/*  */
-// Student.prototype = Object.create(Human.prototype);
-// Student.prototype.constructor = Student;
-/*  */
 
-const Student2 = new Student({ name: 'John', surname: 'Black', age: 73, mark: [2, 3, 4, 5, 3, 4, 5, 3] });
-3;
-const Student3 = new Student({ name: 'Bob', surname: 'White', age: 45, mark: [2, 3, 4, 5, 3, 4, 5, 3] });
-const Student4 = new Student({ name: 'Willyam', surname: 'Skoll', age: 15, mark: [2, 3, 4, 5, 3, 4, 5, 3] });
-
+/*  */
+const Student1 = new Student({ name: 'John', surname: 'Black', age: 25, mark: [3, 3, 4, 5, 3, 4, 5, 3] });
+const Student2 = new Student({ name: 'Bob', surname: 'White', age: 23, mark: [5, 4, 4, 4, 4, 4, 4, 3] });
+const Student3 = new Student({ name: 'Willyam', surname: 'Skoll', age: 21, mark: [3, 3, 4, 3, 5, 3, 4, 3] });
+const Student4 = new Student({ name: 'Jayne', surname: 'Doe', age: 22, mark: [5, 5, 5, 5, 4, 5, 5, 3] });
+const Student5 = new Student({ name: 'Kate', surname: 'Klime', age: 24, mark: [5, 5, 5, 5, 5, 5, 5, 4] });
+/*  */
+console.dir(Student1);
 console.dir(Student2);
 console.dir(Student3);
 console.dir(Student4);
+console.dir(Student5);
+console.log(Student1.getAverageMark());
+console.log(Student1.getMinMark());
+console.log(Student1.getMaxMark());
 
-const student1 = new Student({ name: 'Oleg', surname: 'Saske', age: 29, mark: [3, 4, 4, 3, 3, 3, 5, 3, 5] });
-
-console.log(student1);
 /* 3) */
-
-function Teacher({ name, surname, students }) {
+function Teacher({ name, surname, age, students }) {
 	Human.call(this, { name, surname });
-
+	this.age = age;
 	this.students = students;
+	/* Methods */
+	Teacher.prototype.getListOfNamesByAverageMark = function () {
+		const studentAvarageMark = this.students
+			.map((item) => {
+				item.averageMark = item.getAverageMark();
+				return item;
+			})
+			.sort((a, b) => {
+				return b.averageMark - a.averageMark;
+			});
+
+		return studentAvarageMark.map((item) => {
+			delete item.averageMark;
+			return item.name;
+		});
+	};
+
+	Teacher.prototype.getStudentByName = function (name) {
+		const searchStudentByName = students.find((item) => item.name === name);
+
+		if (searchStudentByName) {
+			return searchStudentByName;
+		}
+
+		throw new TypeError(
+			'Error: Student with this name not found, please make sure you input the correct name of student. '
+		);
+	};
+
+	Teacher.prototype.removeStudentByName = function (name) {
+		const findStudentIndexOnArray = this.students.findIndex((item) => {
+			return item.name === name;
+		});
+
+		if (findStudentIndexOnArray > 0) {
+			students.splice(findStudentIndexOnArray, 1);
+			return students;
+		}
+
+		throw new TypeError(
+			'Error: Student with this name not found, please make sure you input the correct name of student. '
+		);
+	};
+
+	Teacher.prototype.updateStudentByName = function (object, name) {
+		const indexStudentOnArray = this.students.findIndex((item) => {
+			return item.name === name;
+		});
+
+		students.splice(indexStudentOnArray, 1, object);
+		return students;
+	};
 }
 
-const teacher1 = new Teacher('Tatiana', 'Glushko', []);
+Teacher.prototype.constructor = Human;
+
+const teacher1 = new Teacher({
+	name: 'Tatiana',
+	surname: 'Glushko',
+	age: 30,
+	students: [Student1, Student2, Student3, Student4, Student5],
+});
+
+console.dir(teacher1);
+console.log(teacher1.getListOfNamesByAverageMark());
+console.log(teacher1.getStudentByName('Kate'));
+console.log(teacher1.removeStudentByName('Bob'));
+console.log(
+	teacher1.updateStudentByName(
+		new Student({ name: 'Alex', surname: 'Switcher', age: 23, mark: [3, 5, 4, 5, 4, 5, 3, 3] }),
+		'Kate'
+	)
+);
+console.log(teacher1.students);
