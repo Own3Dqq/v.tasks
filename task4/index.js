@@ -1,16 +1,3 @@
-/* 
-1. Переписати останню ДР (ДЗ 18. Реалізація ООП на конструкторах.) на класи. Код повинен працювати ідентично.
-2. 
-Створити клас FakeStudent, який успадковується від класа Student.
-  Цей клас імітує студента-чітера, тому він буде завищувати оцінку. Клас повинен створювати приватну властивість chetedMarks, яка отримує данні від приватного метода cheat.
-  Метод cheat множить всі оцінка на два, а якщо результат перевущує максимальну оцінку (наприклад, 10 або 12), тоді залишаємо максимальну оцінку.
-  Клас FakeStudent також перевизначає методи averageMark, maxMark, minMark так, що тепер вони використовують this.#chetedMarks замість this.marks.
-  Один інстанс класа FakeStudent треба додати до групи студентів, яку і отримує клас Teacher.
-  Додайте класу Teacher метод findFakeStudent.
-  Метод повертатиме рядок, де присутні ім'я фейк-студента та його дійсні оцінки.
-
-Вам треба поміркувати, як виявити фейк студента не створюючі багато коду. */
-
 class Human {
 	constructor({ name, surname, age }) {
 		this.name = name;
@@ -89,8 +76,6 @@ class FakeStudent extends Student {
 
 const fStudent1 = new FakeStudent({ name: 'Hugg', surname: 'Hitler', age: '33', mark: [5, 6, 7, 5, 4, 9] });
 
-console.dir(fStudent1);
-
 class Teacher extends Human {
 	constructor({ name, surname, age, students }) {
 		super({ name, surname });
@@ -139,7 +124,11 @@ class Teacher extends Human {
 		this.students.splice(index, 1, updatedStudent);
 		return this.students;
 	}
-	findFakeStudent() {}
+	findFakeStudent() {
+		return this.students.filter((item) => {
+			return item.constructor !== Student ? item : undefined;
+		});
+	}
 }
 
 const user1 = new Human({ name: 'Vladyslav', surname: 'Tsarik', age: 26 });
@@ -148,7 +137,7 @@ const student2 = new Student({ name: 'Bob', surname: 'White', age: 23, mark: [5,
 const student3 = new Student({ name: 'Willyam', surname: 'Skoll', age: 21, mark: [3, 3, 4, 3, 5, 3, 4, 3] });
 const student4 = new Student({ name: 'Jayne', surname: 'Doe', age: 22, mark: [5, 5, 5, 5, 4, 5, 5, 3] });
 const student5 = new Student({ name: 'Kate', surname: 'Klime', age: 24, mark: [5, 5, 5, 5, 5, 5, 5, 4] });
-const student6 = new FakeStudent({ name: 'Hugo', surname: 'Dedrem', age: 33, mark: [5, 6, 7, 5, 4, 9] });
+const student6 = new FakeStudent({ name: 'Hugo', surname: 'Dedrem', age: 33, mark: [5, 6, 7, 5, 4, 9, 3, 7] });
 
 const teacher1 = new Teacher({
 	name: 'Tatiana',
