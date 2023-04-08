@@ -16,8 +16,7 @@ class Human {
 
 class Student extends Human {
 	constructor({ name, surname, age, mark }) {
-		super({ name, surname });
-		this.age = age;
+		super({ name, surname, age });
 		this.mark = mark;
 	}
 
@@ -47,17 +46,17 @@ class Student extends Human {
 
 class FakeStudent extends Student {
 	#cheatMarks = 0;
+	#maxMark = 12;
 
 	constructor({ name, surname, age, mark }) {
-		super({ name, surname, age });
-		this.mark = mark;
+		super({ name, surname, age, mark });
 		this.#cheatMarks = this.#cheat();
 	}
 
 	#cheat() {
 		return this.mark.map((item) => {
 			const newValue = item * 2;
-			return newValue > 12 ? 12 : newValue;
+			return newValue > this.#maxMark ? this.#maxMark : newValue;
 		});
 	}
 
@@ -78,8 +77,7 @@ const fStudent1 = new FakeStudent({ name: 'Hugg', surname: 'Hitler', age: '33', 
 
 class Teacher extends Human {
 	constructor({ name, surname, age, students }) {
-		super({ name, surname });
-		this.age = age;
+		super({ name, surname, age });
 		this.students = students;
 	}
 
@@ -92,13 +90,12 @@ class Teacher extends Human {
 	getStudentByName(name) {
 		const searchStudentByName = this.students.find((student) => student.name === name);
 
-		return searchStudentByName
-			? searchStudentByName
-			: (() => {
-					throw new TypeError(
-						'Error: Student with this name not found, please make sure you input the correct name of student. '
-					);
-			  })();
+		if (!searchStudentByName) {
+			throw new TypeError(
+				'Error: Student with this name not found, please make sure you input the correct name of student. '
+			);
+		}
+		return searchStudentByName;
 	}
 	removeStudentByName(name) {
 		const findStudentIndexOnArray = this.students.findIndex((student) => student.name === name);
@@ -125,8 +122,8 @@ class Teacher extends Human {
 		return this.students;
 	}
 	findFakeStudent() {
-		return this.students.filter((item) => {
-			return item.constructor !== Student ? item : undefined;
+		return this.students.find((item) => {
+			return item.constructor !== Student;
 		});
 	}
 }
