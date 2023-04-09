@@ -1,4 +1,4 @@
-function unique() {
+function listItemsToUniqueAndSort() {
 	const drinksList = document.querySelector('#drinks-list');
 	const liElements = Array.from(drinksList.querySelectorAll('li'));
 
@@ -6,10 +6,8 @@ function unique() {
 
 	drinksList.innerHTML = '';
 	uniqueTextValues.forEach((value) => {
-		const li = document.createElement('li');
-		li.textContent = value;
-		drinksList.appendChild(li);
+		drinksList.innerHTML += `<li>${value}</li>`;
 	});
 }
 
-unique();
+listItemsToUniqueAndSort();
