@@ -1,6 +1,5 @@
-// Подія – це сигнал від браузера, що щось сталося. 
+// Подія – це сигнал від браузера, що щось сталося.
 // Всі DOM-вузли подають такі сигнали (хоча події бувають не тільки в DOM).
-
 
 // ----------------
 // Події миші:
@@ -24,7 +23,6 @@
 // transitionend – коли CSS-анімацію завершено.
 // -----------------
 
-
 // Є три способи призначення обробників подій:
 
 // Атрибут HTML: onclick="...".
@@ -43,7 +41,6 @@
 //     console.log('clicked', e);
 // }
 
-
 let btn = document.querySelector('#btn');
 // let  removeBtn = document.querySelector('#btn-remove');
 
@@ -53,14 +50,11 @@ let btn = document.querySelector('#btn');
 //     console.log('clicked from addEventListener', event);
 // }
 
-
 // btn.addEventListener('click', handleClick);
 
 // removeBtn.addEventListener('click', function () {
 //     btn.removeEventListener('click', handleClick);
 // });
-
-
 
 // event - Назва події, наприклад "click".
 // handler - Посилання на функцію-обробник.
@@ -73,8 +67,7 @@ let btn = document.querySelector('#btn');
 // Для видалення потрібно передати саме ту функцію-обробник, яка була присвоєна.
 // Коли відбувається подія, браузер створює об’єкт події, записує в нього деталі та передає його як аргумент функції-обробнику.
 
-
-// Ми можемо призначити обробником не лише функцію, а й об’єкт за допомогою addEventListener. 
+// Ми можемо призначити обробником не лише функцію, а й об’єкт за допомогою addEventListener.
 // У такому разі, коли відбувається подія, викликається метод об’єкта handleEvent.
 
 // class Button {
@@ -100,7 +93,6 @@ let btn = document.querySelector('#btn');
 // потім на його батьківському элементі, потім вище і так далі, вгору по ланцюжку предків.
 // Наприклад, є 3 вкладені елементи FORM > DIV > P
 
-
 // Майже усі події спливають.
 
 // Найглибший елемент, який викликає подію, називається цільовим елементом, і він доступний через event.target.
@@ -113,9 +105,8 @@ let btn = document.querySelector('#btn');
 // Для цього треба викликати метод event.stopPropagation ().
 
 // event.stopPropagation () перешкоджає просуванню події далі, але на поточному елементі усі обробники будуть викликані.
-// Для того, щоб повністю зупинити обробку, існує метод event.stopImmediatePropagation (). 
+// Для того, щоб повністю зупинити обробку, існує метод event.stopImmediatePropagation ().
 // Він не лише запобігає спливанню, але і зупиняє обробку подій на поточному елементі.
-
 
 // ________________________________________________________________________________________________________________
 // Занурення capturing
@@ -146,14 +137,14 @@ let btn = document.querySelector('#btn');
 
 // span.addEventListener('click', function (e) {
 //     console.log(this.tagName);
-//     // e.stopPropagation(); 
+//     // e.stopPropagation();
 //     // e.stopImmediatePropagation();
 //     console.log('target ' + e.target.tagName, "currentTarget " + e.currentTarget.tagName);
 // }, true);
 
 // span.addEventListener('click', function (e) {
 //     console.log(this.tagName);
-//     // e.stopPropagation(); 
+//     // e.stopPropagation();
 //     // e.stopImmediatePropagation();
 //     console.log('target ' + e.target.tagName, "currentTarget " + e.currentTarget.tagName);
 // }, true);
@@ -162,7 +153,6 @@ let btn = document.querySelector('#btn');
 //     console.log(this.tagName);
 //     console.log('target ' + e.target.tagName, "currentTarget " + e.currentTarget.tagName);
 // }, true);
-
 
 // ________________________________________________________________________________________________________________
 //  e.preventDefault();
@@ -181,7 +171,7 @@ let btn = document.querySelector('#btn');
 // class Menu {
 //     constructor(elem) {
 //       this._elem = elem;
-//       elem.onclick = this.onClick.bind(this); 
+//       elem.onclick = this.onClick.bind(this);
 //     }
 
 //     save() {
@@ -210,7 +200,6 @@ let btn = document.querySelector('#btn');
 
 // ________________________________________________________________________________________________________________
 
-
 // Спливання та перехоплення дозволяють нам реалізувати один з найпотужніших шаблонів обробки подій під назвою делегування подій.
 // Ідея в тому, що якщо у нас є багато елементів, які обробляються подібним чином, то замість того, щоб призначати обробник кожному з них, ми ставимо один обробник на їхнього спільного предка.
 // У обробнику ми отримуємо event.target, щоб побачити, де насправді сталася подія і обробити її.
@@ -218,29 +207,33 @@ let btn = document.querySelector('#btn');
 let ul = document.querySelector('#ul');
 
 ul.addEventListener('mousedown', function (e) {
-    e.preventDefault();
-})
+	e.preventDefault();
+});
 
 ul.addEventListener('click', function (e) {
-    console.log(e.altKey);
+	console.log(e.altKey);
 
-    if (e.target == this) {
-        return false;
-    }
-    
-    if (!e.altKey) {
-        clearSelected(this.children);
-    }
+	if (e.target == this) {
+		return false;
+	}
 
-    addSelected(e.target);
-})
+	if (!e.altKey) {
+		clearSelected(this.children);
+	}
+
+	if (!e.ctrlKey) {
+		clearSelected(this.children);
+	}
+
+	addSelected(e.target);
+});
 
 function clearSelected(elems) {
-    for (let elem of elems) {
-        console.log(elem.classList.remove('selected'));
-    }
+	for (let elem of elems) {
+		console.log(elem.classList.remove('selected'));
+	}
 }
 
 function addSelected(target) {
-    target.classList.add('selected');
+	target.classList.add('selected');
 }
