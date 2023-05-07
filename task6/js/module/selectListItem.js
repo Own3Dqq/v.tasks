@@ -1,5 +1,3 @@
-/* Реализовать multiSelecte в верх, а так же поведение как в проводнике, при выбранном элементе верх и вниз срабатывает функция. */
-
 const selectListItem = () => {
 	let ul = document.querySelector('#ul');
 
@@ -30,7 +28,6 @@ const selectListItem = () => {
 
 	function selectedRange(firstSelectedElement, currentSelectedElement, array) {
 		const elemsArr = Array.from(array);
-		clearSelected(elemsArr);
 		const firstElementIndex = elemsArr.indexOf(firstSelectedElement);
 		const targetElementIndex = elemsArr.indexOf(currentSelectedElement);
 
