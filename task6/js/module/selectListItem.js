@@ -18,7 +18,6 @@ const selectListItem = () => {
 		} else {
 			clearSelected(this.children);
 			addSelected(e.target);
-			console.log(findFirstSelectedElement(ul.children));
 		}
 	});
 
