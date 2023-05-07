@@ -8,7 +8,6 @@ const selectListItem = () => {
 	});
 
 	ul.addEventListener('click', function (e) {
-		/* если нажатие не по li сбрасывает все выделение элементы. */
 		if (e.target === this) {
 			clearSelected(ul.children);
 			return;
@@ -21,15 +20,17 @@ const selectListItem = () => {
 		} else {
 			clearSelected(this.children);
 			addSelected(e.target);
+			console.log(findFirstSelectedElement(ul.children));
 		}
 	});
 
 	function findFirstSelectedElement(array) {
-		return Array.from(array).find((item) => item.classList.contains('selected')) || 0;
+		return Array.from(array).find((item) => item.classList.contains('selected')) || array[0];
 	}
 
 	function selectedRange(firstSelectedElement, currentSelectedElement, array) {
 		const elemsArr = Array.from(array);
+		clearSelected(elemsArr);
 		const firstElementIndex = elemsArr.indexOf(firstSelectedElement);
 		const targetElementIndex = elemsArr.indexOf(currentSelectedElement);
 
