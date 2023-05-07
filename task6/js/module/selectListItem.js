@@ -1,42 +1,46 @@
+/* Реализовать multiSelecte в верх, а так же поведение как в проводнике, при выбранном элементе верх и вниз срабатывает функция. */
+
 const selectListItem = () => {
 	let ul = document.querySelector('#ul');
-	// let lastClickedElem;
+
 	ul.addEventListener('mousedown', function (e) {
 		e.preventDefault();
 	});
 
 	ul.addEventListener('click', function (e) {
+		/* если нажатие не по li сбрасывает все выделение элементы. */
 		if (e.target === this) {
-			clearSelected(this.children);
+			clearSelected(ul.children);
 			return;
 		}
 
 		if (e.ctrlKey || e.metaKey) {
 			e.target.classList.toggle('selected');
 		} else if (e.shiftKey) {
-			selectRange(e.target, this.children);
+			selectedRange(findFirstSelectedElement(this.children), e.target, this.children);
 		} else {
 			clearSelected(this.children);
 			addSelected(e.target);
 		}
-
-		// lastClickedElem = e.target;
-
-		addSelected(e.target);
 	});
 
-	function selectRange(target, elems) {
-		const elemsArr = Array.from(elems);
-		const targetIndex = elemsArr.findIndex((el) => el === target);
-
-		for (let i = 0; i <= targetIndex; i++) {
-			addSelected(elems[i]);
-		}
+	function findFirstSelectedElement(array) {
+		return Array.from(array).find((item) => item.classList.contains('selected')) || 0;
 	}
 
-	function multiSelecte(elements) {
-		for (let elem of elements) {
-			elem.classList.contains('selected');
+	function selectedRange(firstSelectedElement, currentSelectedElement, array) {
+		const elemsArr = Array.from(array);
+		const firstElementIndex = elemsArr.indexOf(firstSelectedElement);
+		const targetElementIndex = elemsArr.indexOf(currentSelectedElement);
+
+		if (firstElementIndex < targetElementIndex) {
+			for (let i = firstElementIndex; i <= targetElementIndex; i++) {
+				addSelected(array[i]);
+			}
+		} else {
+			for (let i = targetElementIndex; i <= firstElementIndex; i++) {
+				addSelected(array[i]);
+			}
 		}
 	}
 
@@ -48,14 +52,6 @@ const selectListItem = () => {
 
 	function addSelected(target) {
 		target.classList.add('selected');
-	}
-
-	function deleteSelectedItem(elems) {
-		for (let elem of elems) {
-			if (elem.classList.contains('selected')) {
-				elem.remove();
-			}
-		}
 	}
 };
 

@@ -17,6 +17,14 @@ const actionButtons = () => {
 
 		return randomList[Math.floor(Math.random() * 5)];
 	};
+	
+	function deleteSelectedItem(elems) {
+		for (let elem of elems) {
+			if (elem.classList.contains('selected')) {
+				elem.remove();
+			}
+		}
+	}
 
 	const actionOnList = document.querySelector('.action');
 
