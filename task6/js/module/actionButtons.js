@@ -1,6 +1,6 @@
 const actionButtons = () => {
-	function sortByList(elems) {
-		const arr = [...elems];
+	function sortByList(array) {
+		const arr = [...array];
 		arr.sort((a, b) => {
 			return b.classList.contains('selected') - a.classList.contains('selected');
 		});
@@ -17,11 +17,14 @@ const actionButtons = () => {
 
 		return randomList[Math.floor(Math.random() * 5)];
 	};
-	
-	function deleteSelectedItem(elems) {
-		for (let elem of elems) {
-			if (elem.classList.contains('selected')) {
-				elem.remove();
+
+	function deleteSelectedItem(array) {
+		if (!Array.isArray(array) && array.length !== 0) {
+			for (let i = array.length - 1; i >= 0; i--) {
+				const element = array[i];
+				if (element.classList.contains('selected')) {
+					element.parentNode.removeChild(element);
+				}
 			}
 		}
 	}
