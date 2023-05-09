@@ -13,20 +13,16 @@ const actionButtons = () => {
 	}
 
 	const randomToDo = () => {
-		const randomList = ['buy a new book', 'buy products', 'read books', 'learn react', 'watch movie'];
-
+		const randomList = ['Buy a new book', 'Buy products', 'Read books', 'Learn react', 'Watch movie'];
 		return randomList[Math.floor(Math.random() * 5)];
 	};
 
-	function deleteSelectedItem(array) {
-		if (!Array.isArray(array) && array.length !== 0) {
-			for (let i = array.length - 1; i >= 0; i--) {
-				const element = array[i];
-				if (element.classList.contains('selected')) {
-					element.parentNode.removeChild(element);
-				}
+	function deleteSelectedItem(collection) {
+		[...collection].forEach((element) => {
+			if (element instanceof HTMLElement && element.classList.contains('selected')) {
+				element.remove();
 			}
-		}
+		});
 	}
 
 	const actionOnList = document.querySelector('.action');
