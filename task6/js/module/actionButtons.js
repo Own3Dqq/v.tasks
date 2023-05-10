@@ -18,11 +18,13 @@ const actionButtons = () => {
 	};
 
 	function deleteSelectedItem(collection) {
-		[...collection].forEach((element) => {
-			if (element instanceof HTMLElement && element.classList.contains('selected')) {
-				element.remove();
-			}
-		});
+		if (collection instanceof HTMLCollection && collection.length) {
+			Array.from(collection).forEach((element) => {
+				if (element.classList.contains('selected')) {
+					element.remove();
+				}
+			});
+		}
 	}
 
 	const actionOnList = document.querySelector('.action');
